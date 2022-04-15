@@ -1,0 +1,468 @@
+﻿
+@{
+    @using System
+    @using WebPerformanceAnalyzerWorker.Enums
+    @model WebPerformanceAnalyzerWorker.Models.EmailNotificationModel
+
+    string GetDeltaValueWithIcon(LastReportType reportType, double value)
+    {
+        var val = Math.Floor(Math.Abs(value));
+        return value >= 0 ? @$"▲{val.ToString("00")}" : $"▼{val.ToString("00")}";
+    }
+
+    string GetDaySymbol(LastReportType reportType)
+    {
+        return reportType switch
+        {
+            LastReportType.OneDay => "(1d)",
+            LastReportType.SevenDays => "(1w)",
+            LastReportType.ThirtyDays => "(1m)",
+            _ => string.Empty,
+        };
+    }
+
+    string GetIconColor(double val)
+    {
+        return val >= 0 ? "green" : "red";
+    }
+
+    string GetFontFamily()
+    {
+        return "'Roboto Mono', Menlo, 'dejavu sans mono'";
+    }
+
+    string GetStyle(int val)
+    {
+        var backgroundColor = string.Empty;
+        var fontColor = string.Empty;
+        var borderColor = string.Empty;
+
+        if (val > 0 && val < 50)
+        {
+            backgroundColor = "rgba(255, 51, 51, 0.1)";
+            fontColor = "rgb(204, 0, 0)";
+            borderColor = "rgb(255, 51, 51)";
+        }
+        else if (val < 90)
+        {
+            backgroundColor = "rgba(255, 170, 51, 0.1)";
+            fontColor = "rgb(195, 51, 0)";
+            borderColor = "rgb(255, 170, 51)";
+        }
+        else
+        {
+            backgroundColor = "rgba(0, 204, 102, 0.1)";
+            fontColor = "rgb(0, 136, 0)";
+            borderColor = "rgb(0, 204, 102)";
+        }
+        return @$"background:{backgroundColor}; -moz-border-radius: 85px; border-radius: 85px; font-family:'Roboto Mono', Menlo, 'dejavu sans mono'; font-size:32px; color:{fontColor}; font-weight:normal; border: 4px solid {borderColor};";
+    }
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+    <title>DeltaX Performance Analyser</title>
+
+    <style type="text/css">
+
+        body {
+            width: 100%;
+            background-color: #f0f3f8;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            mso-margin-top-alt: 0px;
+            mso-margin-bottom-alt: 0px;
+            mso-padding-alt: 0px 0px 0px 0px;
+        }
+
+        p, h1, h2, h3, h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        span.preheader {
+            display: none;
+            font-size: 1px;
+        }
+
+        html {
+            width: 100%;
+        }
+
+        table {
+            font-size: 12px;
+            border: 0;
+        }
+
+        .menu-space {
+            padding-right: 25px;
+        }
+
+        a, a:hover {
+            text-decoration: none;
+            color: #FFF;
+        }
+
+
+        @@media only screen and (max-width:640px) {
+            body {
+                width: auto !important;
+            }
+
+            table[class=main] {
+                width: 440px !important;
+            }
+
+            table[class=two-left] {
+                width: 420px !important;
+                margin: 0px auto;
+            }
+
+            table[class=full] {
+                width: 100% !important;
+                margin: 0px auto;
+            }
+
+            table[class=alaine] {
+                text-align: center;
+            }
+
+            table[class=menu-space] {
+                padding-right: 0px;
+            }
+
+            table[class=banner] {
+                width: 438px !important;
+            }
+
+            table[class=menu] {
+                width: 438px !important;
+                margin: 0px auto;
+                border-bottom: #e1e0e2 solid 1px;
+            }
+
+            table[class=date] {
+                width: 438px !important;
+                margin: 0px auto;
+                text-align: center;
+            }
+
+            table[class=two-left-inner] {
+                width: 400px !important;
+                margin: 0px auto;
+            }
+
+            table[class=menu-icon] {
+                display: block;
+            }
+
+            table[class=two-left-menu] {
+                text-align: center;
+            }
+        }
+
+        @@media only screen and (max-width:479px) {
+            body {
+                width: auto !important;
+            }
+
+            table[class=main] {
+                width: 310px !important;
+            }
+
+            table[class=two-left] {
+                width: 300px !important;
+                margin: 0px auto;
+            }
+
+            table[class=full] {
+                width: 100% !important;
+                margin: 0px auto;
+            }
+
+            table[class=alaine] {
+                text-align: center;
+            }
+
+            table[class=menu-space] {
+                padding-right: 0px;
+            }
+
+            table[class=banner] {
+                width: 308px !important;
+            }
+
+            table[class=menu] {
+                width: 308px !important;
+                margin: 0px auto;
+                border-bottom: #e1e0e2 solid 1px;
+            }
+
+            table[class=date] {
+                width: 308px !important;
+                margin: 0px auto;
+                text-align: center;
+            }
+
+            table[class=two-left-inner] {
+                width: 280px !important;
+                margin: 0px auto;
+            }
+
+            table[class=menu-icon] {
+                display: none;
+            }
+
+            table[class=two-left-menu] {
+                width: 310px !important;
+                margin: 0px auto;
+            }
+        }
+    </style>
+
+</head>
+
+<body yahoo="fix" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+    <!--Main Table Start-->
+    <!-- Preview Text that text display none  -->
+    <div>
+        <div style="display: none; max-height: 0px; overflow: hidden;">
+            The audit report for your website <b><i> @Model.User.Domain</i></b> with the Url <a style="text-decoration: underline; color: blue;" href="@Model.Url"> <b><i>@Model.Url</i></b></a> has generated on <b><i> @Model.FetchTime </i></b>, performed on device <b><i>@Model.Device </i></b>.
+            Based on the observed metrics against total <b><i> @Model.NumberOfRuns </i></b> runs(s), it has received the above scores with delta changes from the last generated report(s) on
+            <b><i>@string.Join(", ", Model.DeltaChanges.Select(d => d.Value.FetchTime.ToString("dd MMM yyyy")))</i></b> respectively, for detailed insights and suggestions, please click on the below button.
+        </div>
+        <!-- Insert &zwnj;&nbsp; hack after hidden preview text -->
+        <div style="display: none; max-height: 0px; overflow: hidden;">
+            &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+        </div>
+    </div>
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#f0f3f8">
+        <tr>
+            <td align="center" valign="top">
+
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" valign="top">
+                            <table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner">
+                                <tr>
+                                    <td height="60" align="center" valign="top" style="font-size:60px; line-height:60px;">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" valign="top">
+                            <table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner">
+                                <tr>
+                                    <td align="center" valign="top" style="background:#FFF;">
+                                        <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top">
+                                                    <table width="110" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td align="center" valign="top"><a href="https://production1.adbox.pro/"><img mc:edit="tm-01" editable="true" src="https://s3.amazonaws.com/deltax.production/AllFiles/Uploads/Logos/859d6191-9807-44d6-afbf-0ad740809644_dx-avs-manual-color-250x83_Scaled.png" height="70" alt="" /></a></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="30" align="center" valign="top" style="font-size:30px; line-height:30px;">&nbsp;</td>
+                                            </tr>
+                                            <!-- START CONTENT -->
+                                            <tr>
+                                                <td align="center" valign="top">
+                                                    <table width="450" border="0" align="center" cellpadding="0" cellspacing="15">
+                                                        <tr>
+                                                            <td height="85" width="85" align="center" valign="middle" style="@GetStyle(Model.Performance)"> @Model.Performance </td>
+                                                            <td height="85" width="85" align="center" valign="middle" style="@GetStyle(Model.Accessibility)"> @Model.Accessibility </td>
+                                                            <td height="85" width="85" align="center" valign="middle" style="@GetStyle(Model.BestPractices)"> @Model.BestPractices </td>
+                                                            <td height="85" width="85" align="center" valign="middle" style="@GetStyle(Model.SEO)"> @Model.SEO </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="5" align="center" valign="top" style="font-size:5px; line-height:5px;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="45" width="85" align="center" valign="middle" style="font-family: @GetFontFamily(); font-size:13px; font-weight:normal;">
+                                                                @foreach (var delta in Model.DeltaChanges)
+                                                                {
+                                                                    <span style="color: @GetIconColor(delta.Value.Performance); line-height:20px;">
+                                                                        @GetDeltaValueWithIcon(delta.Key, delta.Value.Performance) 
+                                                                        @GetDaySymbol(delta.Key)
+                                                                    </span> <br />
+                                                                }
+                                                                <span style="line-height: 30px; font-size: 16px;">Performance</span>
+                                                            </td>
+                                                            <td height="45" width="85" align="center" valign="middle" style="font-family: @GetFontFamily(); font-size:13px; font-weight:normal;">
+                                                                @foreach (var delta in Model.DeltaChanges)
+                                                                {
+                                                                    <span style="        color: @GetIconColor(delta.Value.Accessibility); line-height: 20px;">
+                                                                        @GetDeltaValueWithIcon(delta.Key, delta.Value.Accessibility) 
+                                                                        @GetDaySymbol(delta.Key)
+                                                                    </span> <br />
+                                                                }
+                                                                <span style="line-height: 30px; font-size: 16px;">Accessibility</span>
+                                                            </td>
+                                                            <td height="45" width="85" align="center" valign="middle" style="font-family: @GetFontFamily(); font-size:13px; font-weight:normal;">
+                                                                @foreach (var delta in Model.DeltaChanges)
+                                                                {
+                                                                    <span style="color: @GetIconColor(delta.Value.BestPractices); line-height: 20px;">
+                                                                        @GetDeltaValueWithIcon(delta.Key, delta.Value.BestPractices) 
+                                                                        @GetDaySymbol(delta.Key)
+                                                                    </span> <br />
+                                                                }
+                                                                <span style="line-height: 30px; font-size: 16px;"> Best Practices</span>
+                                                            </td>
+                                                            <td height="45" width="85" align="center" valign="middle" style="font-family: @GetFontFamily(); font-size:13px; font-weight:normal;">
+                                                                @foreach (var delta in Model.DeltaChanges)
+                                                                {
+                                                                    <span style="color: @GetIconColor(delta.Value.SEO); line-height: 20px;">
+                                                                        @GetDeltaValueWithIcon(delta.Key, delta.Value.SEO) 
+                                                                        @GetDaySymbol(delta.Key)
+                                                                    </span> <br />
+                                                                }
+                                                                <span style="line-height: 30px; font-size:16px;">Optimization</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="30" align="center" valign="top" style="font-size:30px; line-height:30px;">&nbsp;</td>
+                                            </tr>
+                                            @if (!string.IsNullOrEmpty(Model.User.FirstName) && Model.User.FirstName.ToLower() != "user")
+                                            {
+                                                <tr>
+                                                    <td align="center" valign="top" style="font-family: @GetFontFamily(); font-size:22px; color:#4b4b4c; line-height:30px; font-weight:normal;" mc:edit="tm-03"><multiline>Hi @Model.User.FirstName!</multiline></td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td align="center" valign="top">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top" style="font-family: @GetFontFamily(); font-size:25px; color:#4b4b4c; line-height:30px; font-weight:bold;" mc:edit="tm-04"> <multiline> Audit Report Generated </multiline></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top" style="font-family: @GetFontFamily(); font-size:13px; color:#71746f; line-height:22px; font-weight:normal;" mc:edit="tm-05">
+                                                    <multiline>
+                                                        The audit report for your website <b><i> @Model.User.Domain</i></b> with the Url <a style="text-decoration: underline; color: blue;" href="@Model.Url"> <b><i>@Model.Url</i></b></a> has generated on <b><i>@Model.FetchTime</i></b>, performed on <b><i>@Model.Device</i></b> device.
+                                                    </multiline>
+
+                                                    <multiline>
+                                                        Based on the observed metrics against total <b><i> @Model.NumberOfRuns  runs(s)</i></b>, it has received the above scores with delta changes from the last generated report(s) on
+                                                        <b><i>@string.Join(", ", Model.DeltaChanges.Select(d => d.Value.FetchTime.ToString("dd MMM yyyy")))</i></b> respectively, for detailed insights and suggestions, please click on the below button.
+                                                    </multiline>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top">
+                                                    <table width="180" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td height="30" align="center" valign="top">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td height="60" width="120" align="center" valign="middle" style="background: linear-gradient(0deg, #51b848, green); -moz-border-radius: 40px; border-radius: 40px; font-family: @GetFontFamily(); font-size: 18px; font-weight: bold; color: #FFF; " mc:edit="tm-06"><multiline><a href="@Model.RedirectLink" style="text-decoration: none; color: #FFF;">&nbsp; View Details &nbsp;</a></multiline></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <!-- END CONTENT -->
+                                            <tr>
+                                                <td height="30" align="center" valign="top" style="font-size:30px; line-height:30px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:13px; color:#71746f; line-height:22px; font-weight:normal;" mc:edit="tm-07"><multiline>Yours truly,<br />DeltaX Notification Bot</multiline></td>
+                                            </tr>
+                                            @*<tr>
+                                                    <td align="center" valign="top">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" valign="top">
+                                                        <table width="85" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td align="center" valign="top"><a href="https://facebook.com/TeamDeltaX/"><img mc:edit="tm-08" editable="true" src="https://s3.amazonaws.com/deltax.production/AllFiles/CampaignAssistentEmailHelper/facebook.png" width="22" height="22" alt="" /></a></td>
+                                                                <td align="center" valign="top"><a href="https://twitter.com/DeltaXAdCloud"><img mc:edit="tm-09" editable="true" src="https://s3.amazonaws.com/deltax.production/AllFiles/CampaignAssistentEmailHelper/twitter.png" width="22" height="22" alt="" /></a></td>
+                                                                <td align="center" valign="top"><a href="http://www.linkedin.com/company/deltax"><img mc:edit="tm-10" editable="true" src="https://s3.amazonaws.com/deltax.production/AllFiles/CampaignAssistentEmailHelper/linkedin.png" width="22" height="22" alt="" /></a></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>*@
+                                            <tr>
+                                                <td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;">&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" valign="top">
+                            <table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner">
+                                <tr>
+                                    <td align="center" valign="top">
+                                        <table width="260" border="0" align="center" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td height="40" align="center" valign="top" style="font-size:40px; line-height:40px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:12px; color:#4b4b4c; line-height:30px; font-weight:normal;" mc:edit="tm-11"><multiline>&copy; 2022 DeltaX</multiline></td>
+                                            </tr>
+
+                                            @*<tr>
+                                                  <td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:13px; color:#4b4b4c; line-height:20px;" mc:edit="tm-12"><multiline>DeltaX <br/>448, 5th Main Rd, Sector 6, HSR Layout,<br />
+                                                    Bengaluru, KA 560102. India.</multiline></td>
+                                                </tr>
+                                                <tr>
+                                                  <td align="center" valign="top" style="font-family:'Open Sans', sans-serif, Verdana; font-size:12px; color:#4b4b4c; line-height:30px; text-decoration:underline;" mc:edit="tm-13"><unsubscribe>Unsubscribe</unsubscribe></td>
+                                                </tr>*@
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" valign="top">
+                            <table width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="two-left-inner">
+                                <tr>
+                                    <td height="55" align="center" valign="top" style="font-size:55px; line-height:55px;">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!--Main Table End-->
+
+</body>
+</html>

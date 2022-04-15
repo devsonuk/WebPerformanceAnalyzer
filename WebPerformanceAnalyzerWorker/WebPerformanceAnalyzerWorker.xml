@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebPerformanceAnalyzerWorker</name>
+    </assembly>
+    <members>
+        <member name="T:WebPerformanceAnalyzerWorker.Configurations.ApiConfig">
+            <summary>
+            ApiConfig
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configurations.ApiConfig.ApiEndPoint">
+            <summary>
+            Gets or sets the ApiEndPoint.
+            </summary>
+            <value>
+            The ApiEndPoint.
+            </value>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Configuration.AppSettings">
+            <summary>
+            App Config
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.AppSettings.ConnectionString">
+            <summary>
+            Gets or sets the connection string.
+            </summary>
+            <value>
+            The connection string.
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.AppSettings.ApiConfig">
+            <summary>
+            Gets or sets the API end point.
+            </summary>
+            <value>
+            The API end point.
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.AppSettings.EmailOptions">
+            <summary>
+            Gets or sets the EmailOptions.
+            </summary>
+            <value>
+            The EmailOptions.
+            </value>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Configuration.ConnectionString">
+            <summary>
+            Connection String
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.ConnectionString.DeltaXCore">
+            <summary>
+            Gets or sets the delta x core.
+            </summary>
+            <value>
+            The delta x core.
+            </value>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Configuration.EmailOptions">
+            <summary>
+            Represents EmailOptions class
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.EmailOptions.FromAddress">
+            <summary>
+            Gets or sets the ClientFromAddress
+            </summary>
+            <value>
+            The ClientFromAddress
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.EmailOptions.IsSslEnabled">
+            <summary>
+            Gets or sets a value indicating whether gets or sets the SmtpEnableSsl
+            </summary>
+            <value>
+            The SmtpEnableSsl
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.EmailOptions.SmtpHost">
+            <summary>
+            Gets or sets the ClientSmtpHost
+            </summary>
+            <value>
+            The ClientSmtpHost
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.EmailOptions.SmptpUserName">
+            <summary>
+            Gets or sets the ClientSmtpUserName
+            </summary>
+            <value>
+            The ClientSmtpUserName
+            </value>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Configuration.EmailOptions.SmptpPassword">
+            <summary>
+            Gets or sets the ClientSmtpPassword
+            </summary>
+            <value>
+            The ClientSmtpPassword
+            </value>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:WebPerformanceAnalyzerWorker.Entities.LighthouseJsOptions.emulatedFormFactor" -->
+        <member name="P:WebPerformanceAnalyzerWorker.Entities.LighthouseJsOptions.preset">
+            <summary>
+            For LH >= version 7.0
+            </summary>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.EntityDoesNotExistException">
+            <summary>
+            Entity Does Not Exist Exception
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.EntityDoesNotExistException.#ctor(System.Reflection.MemberInfo,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebPerformanceAnalyzerWorker.EntityDoesNotExistException"/> class.
+            </summary>
+            <param name="entityType">The entity type</param>
+            <param name="parameter">The parameter used to find the entity</param>
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.EntityDoesNotExistException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebPerformanceAnalyzerWorker.EntityDoesNotExistException"/> class.
+            </summary>
+            <param name="entityType">The entity type</param>
+            <param name="parameter">The parameter used to find the entity</param>
+            <param name="value">The value of the parameter</param>
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.EntityDoesNotExistException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebPerformanceAnalyzerWorker.EntityDoesNotExistException"/> class.
+            </summary>
+            <param name="message">The custom Exception messge</param>
+            <param name="innerException">The inner exception of the thrown exception</param>
+        </member>
+        <member name="F:WebPerformanceAnalyzerWorker.Helpers.DbHelper._connectionString">
+            <summary>
+            The connection string
+            </summary>
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.Helpers.DbHelper.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebPerformanceAnalyzerWorker.Helpers.DbHelper" /> class.
+            </summary>
+            <param name="connectionstring">parsing a connection string</param>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Models.EmailNotificationModel">
+            <summary>
+            Represents Email notification model
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.MaxWaitForLoad">
+            <summary>
+            The maximum amount of time to wait for a page to load in ms
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.BlockedUrlPatterns">
+            <summary>
+            List of URL patterns to block
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.DisableStorageReset">
+            <summary>
+            Flag indicating that the browser storage should not be reset for the audit
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.DisableDeviceEmulation">
+            <summary>
+            Flag indicating that there shouldn't be any emulation during the run
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.EmulatedFormFactor">
+            <summary>
+            The form factor the emulation should use
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditRequest.OnlyCategories">
+            <summary>
+            Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
+            </summary>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Objects.AuditResult">
+            <summary>
+            Lighthouse Audit Result
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditResult.Performance">
+            <summary>
+            Performance scope
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditResult.Accessibility">
+            <summary>
+            Accessibility scope
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditResult.BestPractices">
+            <summary>
+            Best practices scope
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditResult.Seo">
+            <summary>
+            SEO scope
+            </summary>
+        </member>
+        <member name="P:WebPerformanceAnalyzerWorker.Objects.AuditResult.Pwa">
+            <summary>
+            Progressive Web App scope
+            </summary>
+        </member>
+        <member name="T:WebPerformanceAnalyzerWorker.Worker">
+            <summary>
+            Worker Class
+            </summary>
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.Worker.#ctor(DeltaX.Services.Core.Interfaces.IConnectionStringFactory,DeltaX.Services.Core.Interfaces.IPendingTaskRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebPerformanceAnalyzerWorker.Worker" /> class.
+            </summary>
+            <param name="connectionStringFactory">The connection string factory.</param>
+            <param name="pendingTaskRepository">The pending task repository.</param>
+        </member>
+        <member name="M:WebPerformanceAnalyzerWorker.Worker.DoTask(System.String)">
+            <summary>
+            Does the task.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>
+            boolean
+            </returns>
+        </member>
+        <member name="T:ApprovedBuyInvoiceWorker.Helper.EmailHelper">
+            <summary>
+            Represents EmailHelper class
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ApprovedBuyInvoiceWorker.Helper.EmailHelper.#ctor(WebPerformanceAnalyzerWorker.Configuration.EmailOptions)" -->
+        <member name="M:ApprovedBuyInvoiceWorker.Helper.EmailHelper.SendHTMLMail(System.Net.Mail.MailMessage)">
+            <summary>
+            send email to client
+            </summary>
+            <param name="mailMessage">mailMessage</param>
+        </member>
+    </members>
+</doc>

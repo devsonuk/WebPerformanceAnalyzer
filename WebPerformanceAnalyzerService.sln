@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E4D6E06-F972-4D0E-9832-291004A68CAF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebPerformanceAnalyzerService", "WebPerformanceAnalyzerService\WebPerformanceAnalyzerService.csproj", "{477C6C6B-BE27-451E-BDA6-8C668BB2790B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebPerformanceAnalyzerWorker", "WebPerformanceAnalyzerWorker\WebPerformanceAnalyzerWorker.csproj", "{AAAE9A01-AF37-4D85-85AE-DA4BC933C611}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{477C6C6B-BE27-451E-BDA6-8C668BB2790B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477C6C6B-BE27-451E-BDA6-8C668BB2790B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477C6C6B-BE27-451E-BDA6-8C668BB2790B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477C6C6B-BE27-451E-BDA6-8C668BB2790B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAAE9A01-AF37-4D85-85AE-DA4BC933C611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAAE9A01-AF37-4D85-85AE-DA4BC933C611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAAE9A01-AF37-4D85-85AE-DA4BC933C611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAAE9A01-AF37-4D85-85AE-DA4BC933C611}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8C2CFD7-C62D-4568-AC66-BE995F180A91}
+	EndGlobalSection
+EndGlobal
